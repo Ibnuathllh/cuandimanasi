@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Jurnal Harian Konten Ibnu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f9f9f9;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .day {
+      background: white;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .day h2 {
+      margin: 0 0 10px 0;
+    }
+    .task {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 6px 12px;
+      border: none;
+      background: #4caf50;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button.done {
+      background: gray;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 12px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Jurnal Harian Ibnu</h1>
+
+  <div id="schedule"></div>
+
+  <div class="footer">
+    &copy; 2025 Ibnu Athaillah
+  </div>
+
+  <script>
+    const jadwal = {
+      "Senin": ["Bikin konten Cuandimanasi"],
+      "Selasa": ["Bikin konten Affiliate"],
+      "Rabu": ["Bikin konten Cuandimanasi"],
+      "Kamis": ["Bikin konten Affiliate"],
+      "Jumat": ["Bikin konten Cuandimanasi & Affiliate"]
+    };
+
+    const scheduleDiv = document.getElementById("schedule");
+
+    Object.keys(jadwal).forEach(hari => {
+      const dayDiv = document.createElement("div");
+      dayDiv.className = "day";
+
+      const title = document.createElement("h2");
+      title.textContent = hari;
+      dayDiv.appendChild(title);
+
+      jadwal[hari].forEach((task, index) => {
+        const taskDiv = document.createElement("div");
+        taskDiv.className = "task";
+
+        const taskLabel = document.createElement("span");
+        taskLabel.textContent = task;
+
+        const button = document.createElement("button");
+        button.textContent = "Centang";
+
+        // Cek status localStorage
+        const key = `${hari}-${index}`;
+        if(localStorage.getItem(key) === "done") {
+          button.classList.add("done");
+          button.textContent = "Selesai";
+        }
+
+        button.onclick = () => {
+          button.classList.toggle("done");
+          if(button.classList.contains("done")) {
+            button.textContent = "Selesai";
+            localStorage.setItem(key, "done");
+          } else {
+            button.textContent = "Centang";
+            localStorage.removeItem(key);
+          }
+        };
+
+        taskDiv.appendChild(taskLabel);
+        taskDiv.appendChild(button);
+        dayDiv.appendChild(taskDiv);
+      });
+
+      scheduleDiv.appendChild(dayDiv);
+    });
+  </script>
+
+</body>
+</html>
