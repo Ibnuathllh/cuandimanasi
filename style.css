@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Jurnal Harian Ibnu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-5">
+
+  <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">Jurnal Harian Ibnu</h1>
+
+  <div id="schedule" class="space-y-6 max-w-xl mx-auto"></div>
+
+  <footer class="text-center text-sm text-gray-500 mt-10">
+    &copy; 2025 Ibnu Athaillah
+  </footer>
+
+  <script>
+    const jadwal = {
+      "Senin": ["Bikin konten Cuandimanasi"],
+      "Selasa": ["Bikin konten Affiliate"],
+      "Rabu": ["Bikin konten Cuandimanasi"],
+      "Kamis": ["Bikin konten Affiliate"],
+      "Jumat": ["Bikin konten Cuandimanasi & Affiliate"]
+    };
+
+    const scheduleDiv = document.getElementById("schedule");
+
+    Object.keys(jadwal).forEach(hari => {
+      const dayDiv = document.createElement("div");
+      dayDiv.className = "bg-white rounded-xl shadow p-5";
+
+      const title = document.createElement("h2");
+      title.className = "text-xl font-semibold mb-4 text-gray-700";
+      title.textContent = hari;
+      dayDiv.appendChild(title);
+
+      jadwal[hari].forEach((task, index) => {
+        const taskDiv = document.createElement("div");
+        taskDiv.className = "flex items-center justify-between mb-3";
+
+        const taskLabel = document.createElement("span");
+        taskLabel.className = "text-gray-600";
+        taskLabel.textContent = task;
+
+        const button = document.createElement("button");
+        button.className = "px-4 py-1 rounded-full text-sm font-medium transition";
+        button.textContent = "Centang";
+
+        const key = `${hari}-${index}`;
+        if(localStorage.getItem(key) === "done") {
+          button.classList.add("bg-gray-400", "text-white");
+          button.textContent = "Selesai";
+        } else {
+          button.classList.add("bg-green-500", "text-white");
+        }
+
+        button.onclick = () => {
+          if(button.textContent === "Centang") {
+            button.classList.remove("bg-green-500");
+            button.classList.add("bg-gray-400");
+            button.textContent = "Selesai";
+            localStorage.setItem(key, "done");
+          } else {
+            button.classList.remove("bg-gray-400");
+            button.classList.add("bg-green-500");
+            button.textContent = "Centang";
+            localStorage.removeItem(key);
+          }
+        };
+
+        taskDiv.appendChild(taskLabel);
+        taskDiv.appendChild(button);
+        dayDiv.appendChild(taskDiv);
+      });
+
+      scheduleDiv.appendChild(dayDiv);
+    });
+  </script>
+
+</body>
+</html>
